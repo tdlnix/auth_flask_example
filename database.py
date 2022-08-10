@@ -53,7 +53,15 @@ class SQLAlchemyDB(Database):
             session.commit()
 
     def get_user(self, username):
-        pass
+        session = Session(self.engine)
+        stmt = select(self.User).where(self.User.name.in_([username]))
+        users = list(session.scalars(stmt))
+        if len(users) > 0:
+            user = {"username": users[0].name,
+                    "password": users[0].password}
+            return user
+        else:
+            raise Exception(f"User {username} not found.")
 
     def delete_user(self, username):
         session = Session(self.engine)
