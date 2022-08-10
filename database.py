@@ -23,7 +23,7 @@ class Database(ABC):
         pass
 
     # Delete
-    @abstractmethod  
+    @abstractmethod
     def delete_user(self, username):
         pass
 
@@ -78,3 +78,4 @@ if __name__ == "__main__":
     db = SQLAlchemyDB("database.db")
     db.delete_user("user")
     db.add_user("user", "password")
+    print(db.get_user("user"))

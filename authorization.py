@@ -1,3 +1,7 @@
+from database import Database, SQLAlchemyDB
+from gui import AuthorizationGUI
+
+
 def check_password(database: Database, nickname: str, password: str) -> bool:
     user = database.get_user(nickname)
     if user["password"] == password:
@@ -12,8 +16,8 @@ def check_nickname(database: Database, nickname: str) -> bool:
     return False
 
 
-gui = GUI()
-database = Database("users.db")
+gui = AuthorizationGUI()
+database = SQLAlchemyDB("users.db")
 
 
 def show_registration():
