@@ -4,7 +4,9 @@ import os
 from sqlalchemy import Column
 from sqlalchemy import Integer, String
 from sqlalchemy import create_engine
+from sqlalchemy import select
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import Session
 
 
 class Database(ABC):
@@ -43,15 +45,28 @@ class SQLAlchemyDB(Database):
         return User
 
     def add_user(self, username, password):
-        pass
+        with Session(self.engine) as session:
+            user = self.User(
+                name=username,
+                password=password)
+            session.add(user)
+            session.commit()
 
     def get_user(self, username):
         pass
 
-    @abstractmethod  
     def delete_user(self, username):
-        pass
+        session = Session(self.engine)
+        stmt = select(self.User).where(self.User.name.in_([username]))
+        users = list(session.scalars(stmt))
+        if len(users) > 0:
+            user = list(session.scalars(stmt))[0]
+            session.flush()
+            session.delete(user)
+            session.commit()
 
 
 if __name__ == "__main__":
     db = SQLAlchemyDB("database.db")
+    db.delete_user("user")
+    db.add_user("user", "password")
