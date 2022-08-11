@@ -1,5 +1,5 @@
 from database import Database, SQLAlchemyDB
-from gui import AuthorizationGUI
+from gui import FlaskHTMLAuthGUI
 
 
 def check_password(database: Database, nickname: str, password: str) -> bool:
@@ -16,7 +16,7 @@ def check_nickname(database: Database, nickname: str) -> bool:
     return False
 
 
-gui = AuthorizationGUI()
+gui = FlaskHTMLAuthGUI()
 database = SQLAlchemyDB("users.db")
 
 
